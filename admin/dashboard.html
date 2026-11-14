@@ -29,6 +29,7 @@
       <div class="admin-tabs">
         <button class="admin-tab active" data-tab="projects">Projects</button>
                 <button class="admin-tab" data-tab="categories">Categories</button>
+                        <button class="admin-tab" data-tab="experience">Experience</button>
         <button class="admin-tab" data-tab="testimonials">Testimonials</button>
         <button class="admin-tab" data-tab="messages">Messages</button>
       </div>
@@ -138,6 +139,88 @@
           </table>
         </div>
       </section>
+      <!-- ===== EXPERIENCE TAB ===== -->
+      <section class="admin-panel hide" id="panel-experience">
+        <div class="admin-panel-head">
+          <h2>Experience</h2>
+          <button class="btn btn-primary" id="add-exp-btn">+ Add Job</button>
+        </div>
+
+        <p class="admin-hint">
+          A higher order number appears higher on the public page. Write each
+          bullet point on its own line.
+        </p>
+        <p class="form-message" id="exp-message"></p>
+
+        <form class="feedback-form admin-form hide" id="exp-form">
+          <h3 id="exp-form-title">Add Job</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="e-position">Position *</label>
+              <input type="text" id="e-position" maxlength="100" required />
+            </div>
+            <div class="form-group">
+              <label for="e-company">Company *</label>
+              <input type="text" id="e-company" maxlength="150" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="e-period">Dates * (example: May 2026 – October 2026)</label>
+              <input type="text" id="e-period" maxlength="60" required />
+            </div>
+            <div class="form-group">
+              <label for="e-type">Job type (example: Full-Time)</label>
+              <input type="text" id="e-type" maxlength="40" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="e-location">Location (optional)</label>
+              <input type="text" id="e-location" maxlength="150" />
+            </div>
+            <div class="form-group">
+              <label for="e-order">Order number (higher shows first)</label>
+              <input type="number" id="e-order" step="1" value="0" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="e-details">Responsibilities * (one bullet per line)</label>
+            <textarea id="e-details" rows="7" maxlength="3000" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="e-logo">Company logo (JPG, PNG or WEBP, max 2 MB)</label>
+            <div id="exp-current-logo" class="current-file"></div>
+            <input type="file" id="e-logo" accept=".jpg,.jpeg,.png,.webp" />
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="save-exp-btn">Save Job</button>
+          <button type="button" class="btn btn-outline" id="cancel-exp-btn">Cancel</button>
+        </form>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Logo</th>
+                <th>Position</th>
+                <th>Company</th>
+                <th>Dates</th>
+                <th>Order</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="exp-body">
+              <tr><td colspan="6">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <!-- ===== TESTIMONIALS TAB ===== -->
       <section class="admin-panel hide" id="panel-testimonials">
@@ -183,5 +266,6 @@
     <script src="../js/admin.js"></script>
     <script src="../js/admin-extra.js"></script>
         <script src="../js/admin-categories.js"></script>
+            <script src="../js/admin-experience.js"></script>
   </body>
 </html>
