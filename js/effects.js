@@ -62,4 +62,19 @@ if (!reduceMotion && "IntersectionObserver" in window) {
     el.classList.add("reveal");
     observer.observe(el);
   });
+}// ===== INFINITE LOGO CAROUSEL =====
+// Duplicates the chips so the loop has no gap.
+
+const carouselTrack = document.querySelector(".carousel-track");
+
+if (carouselTrack && !reduceMotion) {
+  const originals = Array.from(carouselTrack.children);
+
+  originals.forEach(function (chip) {
+    const copy = chip.cloneNode(true);
+    copy.setAttribute("aria-hidden", "true");
+    carouselTrack.appendChild(copy);
+  });
+
+  carouselTrack.classList.add("scrolling");
 }

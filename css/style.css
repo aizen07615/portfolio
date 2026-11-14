@@ -1935,4 +1935,55 @@ body:has(.hero-dark) .menu-toggle span {
 .theme-dark .hero-dark .typed-line #typed,
 .theme-dark .hero-dark .cursor {
   color: #ffffff;
+}/* ===== INFINITE LOGO CAROUSEL ===== */
+.tools-row.carousel {
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: block;
+  padding: 10px 0 16px;
+  /* fade out at the left and right edges */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+.carousel-track {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  width: max-content;
+}
+
+.carousel-track .tool-chip {
+  flex-shrink: 0;
+  animation: none; /* stops the old floating so the scroll is smooth */
+}
+
+.carousel-track.scrolling {
+  animation: scroll-logos 28s linear infinite;
+}
+
+/* Pause when the mouse is over the carousel */
+.tools-row.carousel:hover .carousel-track {
+  animation-play-state: paused;
+}
+
+/* Moves by exactly half the track (one full set of logos) */
+@keyframes scroll-logos {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 8px)); }
+}
+
+/* Without motion (reduced-motion setting), show the logos in a static, wrapped row */
+@media (prefers-reduced-motion: reduce) {
+  .tools-row.carousel {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .carousel-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
 }
