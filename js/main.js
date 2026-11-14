@@ -37,7 +37,7 @@ function closeLightbox() {
 }
 
 document.addEventListener("click", function (event) {
-  const img = event.target.closest(".project-thumb img");
+  const img = event.target.closest(".project-thumb img, .cert-card img");
   if (!img) {
     return;
   }

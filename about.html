@@ -5,18 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About | Kenneth Buncaras</title>
 
-    <!-- Google Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
-    <!-- Our own design file -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body class="theme-dark"></body>
+  <body class="about-page">
     <!-- ===== NAVIGATION BAR ===== -->
     <header class="navbar">
       <div class="nav-container">
@@ -37,56 +34,103 @@
     </header>
 
     <main>
-      <!-- ===== ABOUT ME SECTION ===== -->
-      <section class="section page-top">
+      <!-- ===== HEADING ===== -->
+      <section class="ab-hero">
         <div class="container">
-          <div class="section-header">
-            <p class="section-label">About Me</p>
-            <h2 class="section-title">Turning messy data into organized systems</h2>
+          <p class="ab-label"><span></span>About Me</p>
+          <h1 class="ab-title" id="ab-headline">Loading...</h1>
+          <p class="ab-sub" id="ab-subline"></p>
+          <a href="contact.html" class="ab-connect">Let's Connect &rsaquo;</a>
+        </div>
+      </section>
+
+      <!-- ===== BACKGROUND + WHAT I DO ===== -->
+      <section class="ab-section">
+        <div class="container ab-two">
+
+          <div class="ab-card">
+            <div class="ab-card-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></svg>
+              <h2>My Background</h2>
+            </div>
+            <div class="ab-bg-text" id="ab-background"></div>
           </div>
 
-          <div class="about-grid">
-            <div class="about-text">
-              <p>
-                I am a Business Administration graduate majoring in Marketing
-                Management, with hands-on experience in data management,
-                inventory control, and workflow improvement.
-              </p>
-              <p>
-                I enjoy building practical spreadsheet tools in Google Sheets
-                and Microsoft Excel. Using formulas and automation, I turn
-                repetitive manual work into accurate, easy-to-use systems.
-              </p>
-              <p>
-                I am eager to learn new technologies, solve problems, and
-                create innovative solutions that help teams work better.
-              </p>
+          <div class="ab-card">
+            <div class="ab-card-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
+              <h2>What I Do</h2>
+            </div>
+            <div class="ab-do">
+              <div class="ab-do-item">
+                <div class="ab-do-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div>
+                <span>Data Management</span>
+              </div>
+              <div class="ab-do-item">
+                <div class="ab-do-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg></div>
+                <span>Automation</span>
+              </div>
+              <div class="ab-do-item">
+                <div class="ab-do-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7l-5 5 5 5"/><path d="M16 7l5 5-5 5"/><path d="M14 4l-4 16"/></svg></div>
+                <span>Web Development</span>
+              </div>
+              <div class="ab-do-item">
+                <div class="ab-do-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 100 18c1.4 0 2-.9 2-1.8 0-1.2-1-1.4-1-2.5 0-1 .8-1.7 1.8-1.7H17a4 4 0 004-4c0-4-4-8-9-8z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7.5" r="1"/><circle cx="14.5" cy="7.5" r="1"/></svg></div>
+                <span>Design &amp; Visuals</span>
+              </div>
+            </div>
+          </div>
 
-              <h3 class="about-subtitle">Career Interests</h3>
-              <ul class="interest-list">
-                <li>Data management and spreadsheet automation</li>
-                <li>Administrative and operational support</li>
-                <li>Inventory management and reporting</li>
-                <li>System development and process improvement</li>
-              </ul>
+        </div>
+      </section>
+
+      <!-- ===== EDUCATION ===== -->
+      <section class="ab-section">
+        <div class="container">
+          <div class="ab-card ab-edu">
+            <div class="ab-card-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6c-2-1.5-5-2-9-2v14c4 0 7 .5 9 2 2-1.5 5-2 9-2V4c-4 0-7 .5-9 2z"/><path d="M12 6v14"/></svg>
+              <h2>Education</h2>
+            </div>
+                        <div class="ab-edu-body">
+              <div class="ab-edu-main">
+                <img class="ab-school-logo" src="images/school-logo.png" alt="School logo" width="80" height="80" onerror="this.remove()" />
+                <div>
+                  <p class="ab-edu-years">2022 &ndash; 2026</p>
+                  <h3>Bachelor of Science in Business Administration</h3>
+                  <p class="ab-edu-sub">Major in Marketing Management &nbsp;|&nbsp; Dalubhasaang Politekniko ng Lungsod ng Baliwag</p>
+                </div>
+              </div>
+              <span class="ab-badge">&#127942; Dean's Lister 2022&ndash;2026</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CERTIFICATES ===== -->
+      <section class="ab-section ab-last">
+        <div class="container">
+          <div class="ab-card">
+            <div class="ab-card-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/></svg>
+              <h2>Certificates</h2>
             </div>
 
-            <div class="about-education">
-              <h3 class="about-subtitle">Education</h3>
-              <div class="info-card">
-                <p class="card-period">2022 &ndash; 2026</p>
-                <h4>Bachelor of Science in Business Administration</h4>
-                <p class="card-detail">Major in Marketing Management</p>
-                <p class="card-detail">
-                  Dalubhasaang Politekniko ng Lungsod ng Baliwag
-                </p>
-                <p class="card-badge">Dean's Lister, 2022&ndash;2026</p>
+            <div class="cert-wrap">
+              <button class="cert-arrow" id="cert-prev" aria-label="Previous">&lsaquo;</button>
+              <div class="cert-track" id="cert-track">
+                <p class="exp-loading">Loading certificates...</p>
               </div>
+              <button class="cert-arrow" id="cert-next" aria-label="Next">&rsaquo;</button>
             </div>
           </div>
         </div>
       </section>
     </main>
-        <script src="js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/about.js"></script>
   </body>
 </html>
