@@ -1,26 +1,30 @@
-// ===== LOAD PROJECTS FROM THE DATABASE =====
+// ===== LOAD PROJECTS AND CATEGORIES FROM THE DATABASE =====
 
 const featuredGrid = document.getElementById("featured-grid");
 const allGrid = document.getElementById("all-grid");
+const filterBar = document.getElementById("filter-bar");
 
-// Makes text safe before putting it into the page.
 function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text || "";
   return div.innerHTML;
 }
 
-// Each category has a placeholder color and label.
-const categoryStyles = {
-  monitoring: { color: "thumb-navy", label: "Monitoring" },
-  calculators: { color: "thumb-teal", label: "Calculator" },
-  inventory: { color: "thumb-slate", label: "Inventory" },
-  design: { color: "thumb-sky", label: "Design" },
-};
+// Placeholder colors, used in turn for categories without a picture.
+const thumbColors = ["thumb-navy", "thumb-teal", "thumb-slate", "thumb-sky"];
 
-// Builds the HTML for one project card.
+let categoryList = [];
+
+function categoryInfo(slug) {
+  const index = categoryList.findIndex(function (c) { return c.slug === slug; });
+  if (index === -1) {
+    return { name: slug, color: "thumb-navy" };
+  }
+  return { name: categoryList[index].name, color: thumbColors[index % thumbColors.length] };
+}
+
 function buildCard(project, isFeatured) {
-  const style = categoryStyles[project.category] || { color: "thumb-navy", label: project.category };
+  const info = categoryInfo(project.category);
 
   let thumb;
   if (project.image_url) {
@@ -28,8 +32,7 @@ function buildCard(project, isFeatured) {
       '<div class="project-thumb"><img src="' + escapeHtml(project.image_url) +
       '" alt="' + escapeHtml(project.title) + '" /></div>';
   } else {
-    thumb =
-      '<div class="project-thumb ' + style.color + '"><span>' + escapeHtml(style.label) + "</span></div>";
+    thumb = '<div class="project-thumb ' + info.color + '"><span>' + escapeHtml(info.name) + "</span></div>";
   }
 
   let tags = "";
@@ -54,6 +57,27 @@ function buildCard(project, isFeatured) {
 }
 
 async function loadProjects() {
+  const catResult = await db
+    .from("categories")
+    .select("name, slug, sort_order")
+    .order("sort_order", { ascending: true })
+    .order("id", { ascending: true });
+
+  if (!catResult.error) {
+    categoryList = catResult.data;
+  } else {
+    console.error(catResult.error);
+  }
+
+  // Build the filter buttons from the categories.
+  if (filterBar) {
+    filterBar.innerHTML =
+      '<button class="filter-btn active" data-filter="all">All</button>' +
+      categoryList.map(function (c) {
+        return '<button class="filter-btn" data-filter="' + escapeHtml(c.slug) + '">' + escapeHtml(c.name) + "</button>";
+      }).join("");
+  }
+
   const result = await db
     .from("projects")
     .select("*")

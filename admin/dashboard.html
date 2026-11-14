@@ -28,6 +28,7 @@
       <!-- Tabs -->
       <div class="admin-tabs">
         <button class="admin-tab active" data-tab="projects">Projects</button>
+                <button class="admin-tab" data-tab="categories">Categories</button>
         <button class="admin-tab" data-tab="testimonials">Testimonials</button>
         <button class="admin-tab" data-tab="messages">Messages</button>
       </div>
@@ -58,11 +59,7 @@
           <div class="form-row">
             <div class="form-group">
               <label for="p-category">Category *</label>
-              <select id="p-category" required>
-                <option value="monitoring">Monitoring</option>
-                <option value="calculators">Calculators</option>
-                <option value="inventory">Inventory</option>
-                <option value="design">Design</option>
+                            <select id="p-category" required></select>
               </select>
             </div>
 
@@ -112,6 +109,35 @@
           </table>
         </div>
       </section>
+      <!-- ===== CATEGORIES TAB ===== -->
+      <section class="admin-panel hide" id="panel-categories">
+        <h2>Categories</h2>
+        <p class="admin-hint">
+          These become the filter buttons on your Projects page. A lower order number
+          appears first. A category that still has projects cannot be deleted.
+        </p>
+        <p class="form-message" id="category-message"></p>
+
+        <form class="category-add" id="category-form">
+          <input type="text" id="category-name" maxlength="40" placeholder="New category name" required />
+          <button type="submit" class="btn btn-primary">+ Add Category</button>
+        </form>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Order</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="categories-body">
+              <tr><td colspan="3">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       <!-- ===== TESTIMONIALS TAB ===== -->
       <section class="admin-panel hide" id="panel-testimonials">
@@ -156,5 +182,6 @@
     <script src="../js/supabase.js"></script>
     <script src="../js/admin.js"></script>
     <script src="../js/admin-extra.js"></script>
+        <script src="../js/admin-categories.js"></script>
   </body>
 </html>

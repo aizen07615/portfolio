@@ -1986,4 +1986,25 @@ body:has(.hero-dark) .menu-toggle span {
     justify-content: center;
     width: auto;
   }
+}/* ===== ADMIN: ADD CATEGORY ROW ===== */
+.category-add {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.category-add input {
+  flex: 1;
+  min-width: 220px;
+  padding: 11px 14px;
+  border: 1px solid #cdd5e0;
+  border-radius: 6px;
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+}
+
+.category-add .btn {
+  cursor: pointer;
+  font-family: var(--font-main);
 }

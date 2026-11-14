@@ -8,15 +8,19 @@ function homeSafe(text) {
   return div.innerHTML;
 }
 
-const homeCategoryStyles = {
-  monitoring: { color: "thumb-navy", label: "Monitoring" },
-  calculators: { color: "thumb-teal", label: "Calculator" },
-  inventory: { color: "thumb-slate", label: "Inventory" },
-  design: { color: "thumb-sky", label: "Design" },
-};
+const homeThumbColors = ["thumb-navy", "thumb-teal", "thumb-slate", "thumb-sky"];
+let homeCategories = [];
+
+function homeCategoryInfo(slug) {
+  const index = homeCategories.findIndex(function (c) { return c.slug === slug; });
+  if (index === -1) {
+    return { name: slug, color: "thumb-navy" };
+  }
+  return { name: homeCategories[index].name, color: homeThumbColors[index % homeThumbColors.length] };
+}
 
 function buildHomeCard(project) {
-  const style = homeCategoryStyles[project.category] || { color: "thumb-navy", label: project.category };
+  const info = homeCategoryInfo(project.category);
 
   let thumb;
   if (project.image_url) {
@@ -24,7 +28,7 @@ function buildHomeCard(project) {
       '<div class="project-thumb"><img src="' + homeSafe(project.image_url) +
       '" alt="' + homeSafe(project.title) + '" /></div>';
   } else {
-    thumb = '<div class="project-thumb ' + style.color + '"><span>' + homeSafe(style.label) + "</span></div>";
+    thumb = '<div class="project-thumb ' + info.color + '"><span>' + homeSafe(info.name) + "</span></div>";
   }
 
   let tags = "";
@@ -45,6 +49,16 @@ function buildHomeCard(project) {
 }
 
 async function loadHomeFeatured() {
+  const catResult = await db
+    .from("categories")
+    .select("name, slug")
+    .order("sort_order", { ascending: true })
+    .order("id", { ascending: true });
+
+  if (!catResult.error) {
+    homeCategories = catResult.data;
+  }
+
   const result = await db
     .from("projects")
     .select("*")
