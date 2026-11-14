@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Dashboard | Kenneth Buncaras</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body class="admin-page">
+    <!-- Top bar -->
+    <header class="admin-bar">
+      <div class="admin-bar-inner">
+        <strong>Admin Dashboard</strong>
+        <div class="admin-bar-right">
+          <a href="../index.html" target="_blank">View website</a>
+          <button class="admin-btn" id="logout-btn">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-tab="projects">Projects</button>
+        <button class="admin-tab" data-tab="testimonials">Testimonials</button>
+        <button class="admin-tab" data-tab="messages">Messages</button>
+      </div>
+
+      <!-- ===== PROJECTS TAB ===== -->
+      <section class="admin-panel" id="panel-projects">
+        <div class="admin-panel-head">
+          <h2>Projects</h2>
+          <button class="btn btn-primary" id="add-project-btn">+ Add Project</button>
+        </div>
+
+        <p class="form-message" id="admin-message"></p>
+
+        <!-- Add / Edit form (hidden until needed) -->
+        <form class="feedback-form admin-form hide" id="project-form">
+          <h3 id="form-title">Add Project</h3>
+
+          <div class="form-group">
+            <label for="p-title">Title *</label>
+            <input type="text" id="p-title" maxlength="150" required />
+          </div>
+
+          <div class="form-group">
+            <label for="p-description">Description *</label>
+            <textarea id="p-description" rows="4" maxlength="1000" required></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="p-category">Category *</label>
+              <select id="p-category" required>
+                <option value="monitoring">Monitoring</option>
+                <option value="calculators">Calculators</option>
+                <option value="inventory">Inventory</option>
+                <option value="design">Design</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="p-tools">Tools used (separate with commas)</label>
+              <input type="text" id="p-tools" maxlength="200" placeholder="Google Sheets, Formulas" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="check-label">
+              <input type="checkbox" id="p-featured" /> Show in Featured Projects
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="p-image">Thumbnail picture (JPG, PNG or WEBP, max 5 MB)</label>
+            <div id="current-image" class="current-file"></div>
+            <input type="file" id="p-image" accept=".jpg,.jpeg,.png,.webp" />
+          </div>
+
+          <div class="form-group">
+            <label for="p-file">Supporting file (optional, max 10 MB)</label>
+            <div id="current-file" class="current-file"></div>
+            <input type="file" id="p-file" />
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="save-project-btn">Save Project</button>
+          <button type="button" class="btn btn-outline" id="cancel-project-btn">Cancel</button>
+        </form>
+
+        <!-- List of projects -->
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Picture</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projects-body">
+              <tr><td colspan="5">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== TESTIMONIALS TAB ===== -->
+      <section class="admin-panel hide" id="panel-testimonials">
+        <h2>Testimonials</h2>
+        <p class="admin-hint">
+          Featured testimonials appear first. Among the rest, a higher order number
+          appears higher. Equal numbers show the newest first.
+        </p>
+        <p class="form-message" id="testimonial-message"></p>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Person</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Photo</th>
+                <th>Featured</th>
+                <th>Order</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="testimonials-body">
+              <tr><td colspan="7">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== MESSAGES TAB ===== -->
+      <section class="admin-panel hide" id="panel-messages">
+        <h2 id="messages-title">Messages</h2>
+        <p class="form-message" id="messages-status"></p>
+        <div id="messages-list">
+          <p>Loading...</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/admin.js"></script>
+    <script src="../js/admin-extra.js"></script>
+  </body>
+</html>
