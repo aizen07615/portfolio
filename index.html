@@ -38,12 +38,13 @@
 
     <main>
       <!-- ===== HOME / HERO SECTION ===== -->
-      <section class="hero">
+      <section class="hero hero-dark">
         <div class="hero-container">
           <div class="hero-text">
             <p class="hero-greeting">Hello, I'm</p>
             <h1>Kenneth Buncaras</h1>
             <h2 class="hero-title">Data Management &amp; Administrative Professional</h2>
+                        <p class="typed-line">I work with <span id="typed"></span><span class="cursor">|</span></p>
             <p class="hero-summary">
               I organize data, automate spreadsheets, and build practical tools
               that make daily operations more accurate and efficient.
@@ -68,6 +69,53 @@
           </div>
         </div>
       </section>
+      <!-- ===== TOOLS ROW ===== -->
+      <section class="tools-strip">
+        <p class="tools-label">Tools I work with</p>
+        <div class="tools-row">
+          <div class="tool-chip"><img src="images/logos/gmail.png" alt="" onerror="this.remove()" /><span>Gmail</span></div>
+          <div class="tool-chip"><img src="images/logos/sheets.png" alt="" onerror="this.remove()" /><span>Google Sheets</span></div>
+          <div class="tool-chip"><img src="images/logos/excel.png" alt="" onerror="this.remove()" /><span>Excel</span></div>
+          <div class="tool-chip"><img src="images/logos/canva.png" alt="" onerror="this.remove()" /><span>Canva</span></div>
+          <div class="tool-chip"><img src="images/logos/calendar.png" alt="" onerror="this.remove()" /><span>Calendar</span></div>
+          <div class="tool-chip"><img src="images/logos/drive.png" alt="" onerror="this.remove()" /><span>Drive</span></div>
+          <div class="tool-chip"><img src="images/logos/teams.png" alt="" onerror="this.remove()" /><span>Teams</span></div>
+          <div class="tool-chip"><img src="images/logos/outlook.png" alt="" onerror="this.remove()" /><span>Outlook</span></div>
+        </div>
+      </section>
+
+      <!-- ===== SHORT SUMMARY ===== -->
+      <section class="section">
+        <div class="container home-summary">
+          <p class="section-label">In Brief</p>
+          <h2 class="section-title center-title">Turning messy data into organized systems</h2>
+          <p class="home-summary-text">
+            I am a Business Administration graduate with hands-on experience in
+            data management, inventory control, and workflow improvement. I build
+            practical tools in Google Sheets and Excel that save time and reduce
+            errors, and I support teams with reliable administrative work.
+          </p>
+          <a href="about.html" class="rating-link">Read more about me &rarr;</a>
+        </div>
+      </section>
+
+      <!-- ===== FEATURED WORKS ===== -->
+      <section class="section section-gray">
+        <div class="container">
+          <div class="section-header center-header">
+            <p class="section-label">Featured Works</p>
+            <h2 class="section-title center-title">A few things I have built</h2>
+          </div>
+
+          <div class="project-grid" id="home-featured">
+            <p>Loading featured works...</p>
+          </div>
+
+          <div class="center-button">
+            <a href="projects.html" class="btn btn-primary">View All Projects</a>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Supabase helper code (loaded from the internet) -->
@@ -76,5 +124,6 @@
     <script src="js/supabase.js"></script>
     <script src="js/main.js"></script>
     <script src="js/rating.js"></script>
+    <script src="js/home.js"></script>    <script src="js/effects.js"></script>
   </body>
 </html>
