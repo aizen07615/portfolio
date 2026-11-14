@@ -2037,4 +2037,41 @@ body:has(.hero-dark) .menu-toggle span {
     -webkit-mask-image: none;
     mask-image: none;
   }
+}/* ===== HOME HERO: MORE VISIBLE JOB TITLE AND TYPED TEXT ===== */
+
+/* Job title: brighter cyan, bolder, with a dark halo */
+.theme-dark .hero-dark .hero-title,
+.hero-dark .hero-title {
+  color: #5fd4ff;
+  font-weight: 700;
+  text-shadow:
+    0 0 14px rgba(4, 16, 40, 0.95),
+    0 2px 6px rgba(4, 16, 40, 0.95),
+    0 0 22px rgba(56, 189, 248, 0.45);
+}
+
+/* "I work with" stays white */
+.theme-dark .hero-dark .typed-line,
+.hero-dark .typed-line {
+  color: #ffffff;
+  font-weight: 500;
+  text-shadow: 0 2px 8px rgba(4, 16, 40, 0.9);
+}
+
+/* The changing text: light cyan, bold, glowing */
+.theme-dark .hero-dark .typed-line #typed,
+.hero-dark .typed-line #typed {
+  color: #7be8ff;
+  font-weight: 700;
+  font-size: 1.15em;
+  text-shadow:
+    0 0 10px rgba(123, 232, 255, 0.75),
+    0 2px 6px rgba(4, 16, 40, 0.95);
+}
+
+/* The blinking cursor matches the changing text */
+.theme-dark .hero-dark .cursor,
+.hero-dark .cursor {
+  color: #7be8ff;
+  font-weight: 700;
 }
