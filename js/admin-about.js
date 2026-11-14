@@ -65,9 +65,18 @@ function renderCertificates() {
   }
 
   certBody.innerHTML = certRows.map(function (c) {
+    let preview;
+    if (c.image_url) {
+      preview = '<img class="admin-thumb" src="' + escapeAttr(previewUrl(c.image_url)) + '" alt="" />';
+    } else if (c.file_url) {
+      preview = '<a href="' + escapeAttr(previewUrl(c.file_url)) + '" target="_blank">File only</a>';
+    } else {
+      preview = '<span class="admin-no-pic">None</span>';
+    }
+
     return (
       "<tr>" +
-      '<td><img class="admin-thumb" src="' + escapeAttr(previewUrl(c.image_url)) + '" alt="" /></td>' +
+      "<td>" + preview + "</td>" +
       "<td><strong>" + escapeText(c.title) + "</strong></td>" +
       "<td>" + escapeText(c.issuer || "") + "</td>" +
       '<td><input type="number" class="order-input" data-cert-id="' + c.id + '" value="' + c.sort_order + '" step="1" /></td>' +
@@ -109,9 +118,16 @@ function openCertForm(cert) {
     : 1;
   document.getElementById("c-order").value = cert ? cert.sort_order : nextOrder;
 
-  document.getElementById("cert-current-image").innerHTML = cert
+  document.getElementById("cert-current-image").innerHTML = cert && cert.image_url
     ? '<img class="admin-thumb" src="' + escapeAttr(previewUrl(cert.image_url)) + '" alt="" />' +
+      '<label class="check-label"><input type="checkbox" id="remove-cert-image" /> Remove current picture</label>' +
       "<small>Choose a new picture below to replace it.</small>"
+    : "";
+
+  document.getElementById("cert-current-file").innerHTML = cert && cert.file_url
+    ? '<a href="' + escapeAttr(previewUrl(cert.file_url)) + '" target="_blank">Current file</a>' +
+      '<label class="check-label"><input type="checkbox" id="remove-cert-file" /> Remove current file</label>' +
+      "<small>Choose a new file below to replace it.</small>"
     : "";
 
   certForm.classList.remove("hide");
@@ -155,6 +171,7 @@ certBody.addEventListener("click", async function (event) {
   }
 
   await removeStoredFile(cert.image_url);
+  await removeStoredFile(cert.file_url);
   showStatus(certMessage, "Certificate deleted.", "info");
   loadAdminCertificates();
 });
@@ -191,10 +208,18 @@ certForm.addEventListener("submit", async function (event) {
 
   const saveButton = document.getElementById("save-cert-btn");
   const imageFile = document.getElementById("c-image").files[0];
+  const otherFile = document.getElementById("c-file").files[0];
   const existing = editingCertId ? certRows.find(function (c) { return c.id === editingCertId; }) : null;
 
-  if (!existing && !imageFile) {
-    showStatus(certMessage, "Please choose a certificate picture.", "error");
+  const removeImage = document.getElementById("remove-cert-image");
+  const removeFile = document.getElementById("remove-cert-file");
+
+  // At least one of picture or file must remain.
+  const keepsImage = existing && existing.image_url && !(removeImage && removeImage.checked);
+  const keepsFile = existing && existing.file_url && !(removeFile && removeFile.checked);
+
+  if (!imageFile && !otherFile && !keepsImage && !keepsFile) {
+    showStatus(certMessage, "Please upload a picture or a file (or both).", "error");
     return;
   }
 
@@ -210,16 +235,35 @@ certForm.addEventListener("submit", async function (event) {
     }
   }
 
+  if (otherFile && otherFile.size > 10 * 1024 * 1024) {
+    showStatus(certMessage, "The file is over 10 MB.", "error");
+    return;
+  }
+
   saveButton.disabled = true;
   showStatus(certMessage, "Saving...", "info");
 
   try {
     let imageUrl = existing ? existing.image_url : null;
-    let oldToDelete = null;
+    let fileUrl = existing ? existing.file_url : null;
+    const oldToDelete = [];
+
+    if (removeImage && removeImage.checked) {
+      oldToDelete.push(imageUrl);
+      imageUrl = null;
+    }
+    if (removeFile && removeFile.checked) {
+      oldToDelete.push(fileUrl);
+      fileUrl = null;
+    }
 
     if (imageFile) {
-      if (imageUrl) oldToDelete = imageUrl;
+      if (imageUrl) oldToDelete.push(imageUrl);
       imageUrl = await uploadFile(imageFile);
+    }
+    if (otherFile) {
+      if (fileUrl) oldToDelete.push(fileUrl);
+      fileUrl = await uploadFile(otherFile);
     }
 
     const issuerValue = document.getElementById("c-issuer").value.trim();
@@ -230,6 +274,7 @@ certForm.addEventListener("submit", async function (event) {
       issuer: issuerValue === "" ? null : issuerValue,
       sort_order: Number.isNaN(orderValue) ? 0 : orderValue,
       image_url: imageUrl,
+      file_url: fileUrl,
     };
 
     const result = editingCertId
@@ -240,8 +285,8 @@ certForm.addEventListener("submit", async function (event) {
       throw result.error;
     }
 
-    if (oldToDelete) {
-      await removeStoredFile(oldToDelete);
+    for (const oldUrl of oldToDelete) {
+      await removeStoredFile(oldUrl);
     }
 
     closeCertForm();

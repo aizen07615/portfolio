@@ -287,11 +287,15 @@
           </div>
 
           <div class="form-group">
-            <label for="c-image">Certificate picture * (JPG, PNG or WEBP, max 5 MB)</label>
+                        <label for="c-image">Certificate picture (optional if you upload a file; JPG, PNG or WEBP, max 5 MB)</label>
             <div id="cert-current-image" class="current-file"></div>
             <input type="file" id="c-image" accept=".jpg,.jpeg,.png,.webp" />
           </div>
-
+          <div class="form-group">
+            <label for="c-file">Certificate file (optional: PDF or document, max 10 MB)</label>
+            <div id="cert-current-file" class="current-file"></div>
+            <input type="file" id="c-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp" />
+          </div>
           <button type="submit" class="btn btn-primary" id="save-cert-btn">Save Certificate</button>
           <button type="button" class="btn btn-outline" id="cancel-cert-btn">Cancel</button>
         </form>
