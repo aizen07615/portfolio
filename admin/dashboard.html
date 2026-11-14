@@ -30,6 +30,8 @@
         <button class="admin-tab active" data-tab="projects">Projects</button>
                 <button class="admin-tab" data-tab="categories">Categories</button>
                         <button class="admin-tab" data-tab="experience">Experience</button>
+                                <button class="admin-tab" data-tab="about">About</button>
+        <button class="admin-tab" data-tab="certificates">Certificates</button>
         <button class="admin-tab" data-tab="testimonials">Testimonials</button>
         <button class="admin-tab" data-tab="messages">Messages</button>
       </div>
@@ -222,6 +224,95 @@
         </div>
       </section>
 
+            <!-- ===== ABOUT TAB ===== -->
+      <section class="admin-panel hide" id="panel-about">
+        <h2>About Page Text</h2>
+        <p class="admin-hint">
+          Edit the headline, the small line under it, and the My Background text.
+          A blank line starts a new paragraph. The last two words of the headline
+          show in cyan.
+        </p>
+        <p class="form-message" id="about-message"></p>
+
+        <form class="feedback-form admin-form" id="about-form">
+          <div class="form-group">
+            <label for="a-headline">Headline *</label>
+            <input type="text" id="a-headline" maxlength="120" required />
+          </div>
+
+          <div class="form-group">
+            <label for="a-subline">Small line under the headline</label>
+            <input type="text" id="a-subline" maxlength="120" />
+          </div>
+
+          <div class="form-group">
+            <label for="a-background">My Background *</label>
+            <textarea id="a-background" rows="12" maxlength="1500" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="save-about-btn">Save About</button>
+        </form>
+      </section>
+
+      <!-- ===== CERTIFICATES TAB ===== -->
+      <section class="admin-panel hide" id="panel-certificates">
+        <div class="admin-panel-head">
+          <h2>Certificates</h2>
+          <button class="btn btn-primary" id="add-cert-btn">+ Add Certificate</button>
+        </div>
+
+        <p class="admin-hint">
+          Upload a picture of each certificate. A higher order number appears first
+          in the carousel.
+        </p>
+        <p class="form-message" id="cert-message"></p>
+
+        <form class="feedback-form admin-form hide" id="cert-form">
+          <h3 id="cert-form-title">Add Certificate</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="c-title">Title *</label>
+              <input type="text" id="c-title" maxlength="150" required />
+            </div>
+            <div class="form-group">
+              <label for="c-issuer">Issued by (optional)</label>
+              <input type="text" id="c-issuer" maxlength="100" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="c-order">Order number (higher shows first)</label>
+            <input type="number" id="c-order" step="1" value="0" />
+          </div>
+
+          <div class="form-group">
+            <label for="c-image">Certificate picture * (JPG, PNG or WEBP, max 5 MB)</label>
+            <div id="cert-current-image" class="current-file"></div>
+            <input type="file" id="c-image" accept=".jpg,.jpeg,.png,.webp" />
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="save-cert-btn">Save Certificate</button>
+          <button type="button" class="btn btn-outline" id="cancel-cert-btn">Cancel</button>
+        </form>
+
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Picture</th>
+                <th>Title</th>
+                <th>Issued by</th>
+                <th>Order</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="cert-body">
+              <tr><td colspan="5">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
       <!-- ===== TESTIMONIALS TAB ===== -->
       <section class="admin-panel hide" id="panel-testimonials">
         <h2>Testimonials</h2>
@@ -267,5 +358,6 @@
     <script src="../js/admin-extra.js"></script>
         <script src="../js/admin-categories.js"></script>
             <script src="../js/admin-experience.js"></script>
+                <script src="../js/admin-about.js"></script>
   </body>
 </html>
