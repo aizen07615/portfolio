@@ -115,4 +115,5 @@ if (navContainer && navMenu) {
     menuButton.classList.toggle("open", isOpen);
     menuButton.setAttribute("aria-expanded", isOpen);
   });
-}
+}// ===== Turn on the dark blue theme for public pages =====
+document.body.classList.add("theme-dark");

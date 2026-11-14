@@ -1853,4 +1853,86 @@ h1 {
   .theme-dark .hero-dark .hero-image img {
     animation: none;
   }
+}/* ===== HOME PAGE COLORS (hero section and navigation) ===== */
+
+/* Navigation: dark bar so the white text is readable (Home page only) */
+body:has(.hero-dark) .navbar {
+  background-color: rgba(7, 27, 58, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+}
+
+body:has(.hero-dark) .logo,
+body:has(.hero-dark) .nav-links a,
+body:has(.hero-dark) .nav-links a.active {
+  color: #ffffff;
+}
+
+body:has(.hero-dark) .nav-links a:hover {
+  color: #38bdf8;
+}
+
+body:has(.hero-dark) .nav-links a.active {
+  border-bottom-color: #ffffff;
+}
+
+body:has(.hero-dark) .menu-toggle span {
+  background-color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  body:has(.hero-dark) .nav-links {
+    background-color: #071b3a;
+  }
+}
+
+/* Your name */
+.hero-dark h1 {
+  color: #ffffff;
+}
+
+/* Job title */
+.hero-dark .hero-title {
+  color: #38bdf8;
+}
+
+/* Short introduction */
+.hero-dark .hero-summary {
+  color: #ffffff;
+}
+
+/* Description / tagline (the typing line) */
+.hero-dark .typed-line,
+.hero-dark .typed-line #typed,
+.hero-dark .cursor {
+  color: #ffffff;
+}
+
+/* Button text */
+.hero-dark .btn,
+.hero-dark .btn-primary,
+.hero-dark .btn-outline {
+  color: #ffffff;
+}
+
+.hero-dark .btn-outline:hover {
+  background-color: #1677ff;
+  border-color: #1677ff;
+  color: #ffffff;
+}
+
+/* Supporting labels ("Hello, I'm", rating text, "Leave a rating") */
+.hero-dark .hero-greeting,
+.hero-dark .rating-text,
+.hero-dark .rating-link {
+  color: #ffffff;
+}/* ===== FORCE WHITE TEXT IN THE HOME HERO ===== */
+.theme-dark .hero-dark .hero-summary,
+.theme-dark .hero-dark .hero-greeting,
+.theme-dark .hero-dark .rating-text,
+.theme-dark .hero-dark .rating-link,
+.theme-dark .hero-dark .typed-line,
+.theme-dark .hero-dark .typed-line #typed,
+.theme-dark .hero-dark .cursor {
+  color: #ffffff;
 }
