@@ -29,7 +29,10 @@ function buildTestimonialCard(item) {
     badge +
     '<div class="stars" aria-label="' + item.rating + ' out of 5 stars">' +
     filled + '<span class="stars-empty">' + empty + "</span></div>" +
-    '<p class="testimonial-text">' + escapeText(item.comment) + "</p>" +
+        '<p class="testimonial-text">' + escapeText(item.comment) + "</p>" +
+    (item.comment.length > 160
+      ? '<button type="button" class="read-more">Read more</button>'
+      : "") +
     photo +
     '<div class="testimonial-author">' +
     '<div class="author-avatar">' + escapeText(initial) + "</div>" +
@@ -177,4 +180,28 @@ if (feedbackForm) {
     showMessage("Thank you! Your testimonial is now on the page.", "info");
     loadTestimonials();
   });
+}// ===== LONG COMMENTS: clip first, show everything on "Read more" =====
+
+function clipLongComments() {
+  document.querySelectorAll(".testimonial-text").forEach(function (text) {
+    const button = text.nextElementSibling;
+    if (button && button.classList.contains("read-more")) {
+      text.classList.add("clipped");
+    }
+  });
 }
+
+if (testimonialGrid) {
+  // Run after the cards are built.
+  const clipObserver = new MutationObserver(clipLongComments);
+  clipObserver.observe(testimonialGrid, { childList: true });
+}
+
+document.addEventListener("click", function (event) {
+  const button = event.target.closest(".read-more");
+  if (!button) return;
+
+  const text = button.previousElementSibling;
+  const isClipped = text.classList.toggle("clipped");
+  button.textContent = isClipped ? "Read more" : "Show less";
+});

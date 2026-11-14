@@ -3045,4 +3045,27 @@ body:has(.hero-dark) .menu-toggle span {
   flex: 1;
   width: 100%;
   border: 0;
+}/* ===== TESTIMONIALS: READ MORE AND PHOTO ENLARGE ===== */
+.testimonial-text.clipped {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.read-more {
+  margin: -10px 0 18px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-main);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #38bdf8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.testimonial-photo {
+  cursor: zoom-in;
 }
