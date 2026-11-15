@@ -26,8 +26,8 @@ async function loadAboutText() {
   headlineEl.innerHTML =
     aboutSafe(words.slice(0, keep).join(" ")) +
     (keep > 0 ? " " : "") +
-    "<span>" + aboutSafe(words.slice(keep).join(" ")) + "</span>";
-
+       '<span class="ab-cyan">' + aboutSafe(words.slice(keep).join(" ")) + "</span>";
+ 
   document.getElementById("ab-subline").textContent = about.subline || "";
 
   // Each blank line starts a new paragraph.
@@ -190,5 +190,115 @@ if (certTrack) {
   });
 }
 
-loadAboutText();
-loadCertificates();
+// ===== SCATTER AND REASSEMBLE EFFECT FOR ALL TEXT ON THE PAGE =====
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function scatterChar(c, big) {
+  const rangeX = big ? 520 : 160;
+  const rangeY = big ? 320 : 110;
+  c.style.transition = "none";
+  c.style.transform =
+    "translate(" + (Math.random() - 0.5) * rangeX + "px," + (Math.random() - 0.5) * rangeY + "px) " +
+    "rotate(" + (Math.random() - 0.5) * 360 + "deg) scale(" + (0.4 + Math.random()) + ")";
+  c.style.opacity = "0";
+  c.style.filter = "blur(5px)";
+}
+
+function assembleChars(chars) {
+  chars.forEach(function (c, i) {
+    const delay = Math.min(i * 0.02, 1.0);
+    c.style.transition =
+      "transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) " + delay + "s, " +
+      "opacity 0.7s ease " + delay + "s, filter 0.7s ease " + delay + "s";
+    c.style.transform = "none";
+    c.style.opacity = "1";
+    c.style.filter = "none";
+  });
+}
+
+function scatterPage() {
+  if (reduceMotion) return;
+
+  const root = document.querySelector("main");
+  if (!root) return;
+
+  // Find every piece of text (skip buttons and icons).
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode: function (node) {
+      if (!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+      if (node.parentElement.closest("script, style, button, svg")) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+
+  const textNodes = [];
+  while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+  const groups = new Map(); // text block -> its letters
+
+  textNodes.forEach(function (node) {
+    const parent = node.parentElement;
+    const group = parent.closest("h1, h2, h3, h4, p, li, figcaption, a") || parent;
+    if (!groups.has(group)) groups.set(group, []);
+
+    const fragment = document.createDocumentFragment();
+
+    node.nodeValue.split(/(\s+)/).forEach(function (part) {
+      if (part === "") return;
+      if (/^\s+$/.test(part)) {
+        fragment.appendChild(document.createTextNode(part));
+        return;
+      }
+      const word = document.createElement("span");
+      word.className = "sc-word";
+      Array.from(part).forEach(function (ch) {
+        const letter = document.createElement("span");
+        letter.className = "sc-char";
+        letter.textContent = ch;
+        word.appendChild(letter);
+        groups.get(group).push(letter);
+      });
+      fragment.appendChild(word);
+    });
+
+    node.parentNode.replaceChild(fragment, node);
+  });
+
+  const headline = document.getElementById("ab-headline");
+  const busy = new Map();
+
+  function play(group, chars) {
+    if (busy.get(group)) return;
+    busy.set(group, true);
+    const big = group === headline;
+    chars.forEach(function (c) { scatterChar(c, big); });
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        assembleChars(chars);
+        setTimeout(function () { busy.set(group, false); }, 2400);
+      });
+    });
+  }
+
+  // Start every block scattered, then assemble it when it scrolls into view.
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        play(entry.target, groups.get(entry.target));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  groups.forEach(function (chars, group) {
+    chars.forEach(function (c) { scatterChar(c, group === headline); });
+    observer.observe(group);
+   
+  });
+
+  
+}
+
+// Run after the database text and certificates have loaded.
+Promise.all([loadAboutText(), loadCertificates()]).then(scatterPage);
