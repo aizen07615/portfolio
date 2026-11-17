@@ -3199,4 +3199,87 @@ body:has(.hero-dark) .menu-toggle span {
   .gal-nav { width: 40px; height: 40px; font-size: 1.6rem; }
   .gal-prev { left: 6px; }
   .gal-next { right: 6px; }
+}/* ===== IN-CARD PHOTO ARROWS ===== */
+.has-slider {
+  position: relative;
+}
+
+.slider-wrap {
+  margin-bottom: 20px;
+}
+
+.slider-wrap .testimonial-photo {
+  margin-bottom: 0;
+}
+
+.has-slider img {
+  transition: opacity 0.15s ease;
+}
+
+.has-slider img.slide-fading {
+  opacity: 0;
+}
+
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background-color: rgba(7, 27, 58, 0.65);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0 0 3px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  z-index: 2;
+}
+
+.slide-arrow:hover {
+  background-color: #1677ff;
+  border-color: #1677ff;
+}
+
+.slide-prev { left: 8px; }
+.slide-next { right: 8px; }
+
+/* Show arrows when the pointer is over the image, or when tabbing with the keyboard */
+.has-slider:hover .slide-arrow,
+.slide-arrow:focus-visible {
+  opacity: 1;
+}
+
+.slide-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.slide-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+.slide-dots i.on {
+  background-color: #ffffff;
+}
+
+/* Phones and tablets have no hover, so keep the arrows visible */
+@media (hover: none) {
+  .slide-arrow {
+    opacity: 1;
+  }
 }
