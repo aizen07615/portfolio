@@ -53,7 +53,63 @@ async function uploadFile(file) {
   }
   return db.storage.from(BUCKET).getPublicUrl(fileName).data.publicUrl;
 }
+// ----- Extra photos for the gallery -----
+let currentPhotos = [];
 
+function renderPhotoTiles() {
+  const holder = document.getElementById("current-photos");
+  if (currentPhotos.length === 0) {
+    holder.innerHTML = "";
+    return;
+  }
+  holder.innerHTML = currentPhotos.map(function (p) {
+    return (
+      '<div class="photo-tile">' +
+      '<img src="' + escapeText(previewUrl(p.image_url)) + '" alt="" />' +
+      '<button type="button" data-photo-id="' + p.id + '" aria-label="Delete photo">&times;</button>' +
+      "</div>"
+    );
+  }).join("");
+}
+
+async function loadProjectPhotos(projectId) {
+  currentPhotos = [];
+  renderPhotoTiles();
+  if (!projectId) return;
+
+  const result = await db
+    .from("project_photos")
+    .select("*")
+    .eq("project_id", projectId)
+    .order("sort_order", { ascending: true })
+    .order("id", { ascending: true });
+
+  if (!result.error) {
+    currentPhotos = result.data;
+    renderPhotoTiles();
+  }
+}
+
+document.getElementById("current-photos").addEventListener("click", async function (event) {
+  const button = event.target.closest("button[data-photo-id]");
+  if (!button) return;
+
+  const id = Number(button.getAttribute("data-photo-id"));
+  const photo = currentPhotos.find(function (p) { return p.id === id; });
+  if (!photo) return;
+  if (!confirm("Delete this photo?")) return;
+
+  const result = await db.from("project_photos").delete().eq("id", id);
+  if (result.error) {
+    console.error(result.error);
+    showAdminMessage("Could not delete the photo.", "error");
+    return;
+  }
+
+  await removeStoredFile(photo.image_url);
+  currentPhotos = currentPhotos.filter(function (p) { return p.id !== id; });
+  renderPhotoTiles();
+});
 // ----- Login check -----
 async function checkLogin() {
   const result = await db.auth.getSession();
@@ -146,6 +202,7 @@ function openForm(project) {
       '<label class="check-label"><input type="checkbox" id="remove-file" /> Remove current file</label>' +
       "<small>Choose a new file below to replace it.</small>"
     : "";
+      loadProjectPhotos(project ? project.id : null);
 
   projectForm.classList.remove("hide");
   projectForm.scrollIntoView();
@@ -180,7 +237,7 @@ projectsBody.addEventListener("click", async function (event) {
 
   // Delete
   if (!confirm('Delete "' + project.title + '"? This cannot be undone.')) return;
-
+  const photosToRemove = await db.from("project_photos").select("image_url").eq("project_id", id);
   const result = await db.from("projects").delete().eq("id", id);
   if (result.error) {
     console.error(result.error);
@@ -190,7 +247,11 @@ projectsBody.addEventListener("click", async function (event) {
 
   await removeStoredFile(project.image_url);
   await removeStoredFile(project.file_url);
-
+  if (photosToRemove.data) {
+    for (const p of photosToRemove.data) {
+      await removeStoredFile(p.image_url);
+    }
+  }
   showAdminMessage("Project deleted.", "info");
   loadProjects();
 });
@@ -268,8 +329,31 @@ projectForm.addEventListener("submit", async function (event) {
       ? await db.from("projects").update(record).eq("id", editingId)
       : await db.from("projects").insert(record);
 
-    if (result.error) {
+        if (result.error) {
       throw result.error;
+    }
+
+    // Upload the extra gallery photos.
+    const photoFiles = Array.from(document.getElementById("p-photos").files);
+    if (photoFiles.length > 0) {
+      let projectId = editingId;
+      if (!projectId) {
+        const latest = await db.from("projects").select("id").order("id", { ascending: false }).limit(1).single();
+        projectId = latest.data.id;
+      }
+
+      let nextOrder = currentPhotos.length
+        ? Math.max.apply(null, currentPhotos.map(function (p) { return p.sort_order; })) + 1
+        : 1;
+
+      for (const file of photoFiles) {
+        const okTypes = ["image/jpeg", "image/png", "image/webp"];
+        if (!okTypes.includes(file.type) || file.size > 5 * 1024 * 1024) {
+          continue; // skip files that are the wrong type or too large
+        }
+        const url = await uploadFile(file);
+        await db.from("project_photos").insert({ project_id: projectId, image_url: url, sort_order: nextOrder++ });
+      }
     }
 
     // Clean up old files only after the save worked.

@@ -5,12 +5,19 @@ const homeFeatured = document.getElementById("home-featured");
 function homeSafe(text) {
   const div = document.createElement("div");
   div.textContent = text || "";
-  return div.innerHTML;
+ return div.innerHTML.replace(/"/g, "&quot;");
 }
 
 const homeThumbColors = ["thumb-navy", "thumb-teal", "thumb-slate", "thumb-sky"];
 let homeCategories = [];
+let homePhotos = {};
 
+function homeGalleryFor(project) {
+  const list = [];
+  if (project.image_url) list.push(project.image_url);
+  (homePhotos[project.id] || []).forEach(function (url) { list.push(url); });
+  return list;
+}
 function homeCategoryInfo(slug) {
   const index = homeCategories.findIndex(function (c) { return c.slug === slug; });
   if (index === -1) {
@@ -39,7 +46,9 @@ function buildHomeCard(project) {
   }
 
   return (
-    '<article class="project-card">' + thumb +
+    '<article class="project-card"' +
+    ' data-gallery="' + homeSafe(JSON.stringify(homeGalleryFor(project))) + '"' +
+    ' data-gallery-title="' + homeSafe(project.title) + '">' + thumb +
     '<div class="project-body">' +
     "<h3>" + homeSafe(project.title) + "</h3>" +
     "<p>" + homeSafe(project.description) + "</p>" +
@@ -71,7 +80,19 @@ async function loadHomeFeatured() {
     homeFeatured.innerHTML = "<p>Sorry, projects could not be loaded right now.</p>";
     return;
   }
+  const photoResult = await db
+    .from("project_photos")
+    .select("project_id, image_url")
+    .order("sort_order", { ascending: true })
+    .order("id", { ascending: true });
 
+  homePhotos = {};
+  if (!photoResult.error) {
+    photoResult.data.forEach(function (p) {
+      if (!homePhotos[p.project_id]) homePhotos[p.project_id] = [];
+      homePhotos[p.project_id].push(p.image_url);
+    });
+  }
   if (result.data.length === 0) {
     homeFeatured.innerHTML = "<p>No featured works yet.</p>";
     return;
